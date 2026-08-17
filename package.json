@@ -4,10 +4,11 @@
     "better-sqlite3": "^13.0.3",
     "express": "^5.2.1",
     "nodeman": "^1.1.2",
+    "pg": "^8.23.0",
     "swagger-ui-express": "^5.0.1"
   },
   "scripts": {
-    "start": "node server.js",
+    "start": "node --env-file=.env server.js",
     "dev": "nodemon server.js"
   }
 }
