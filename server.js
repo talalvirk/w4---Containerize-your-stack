@@ -2,7 +2,11 @@ import express from "express";
 import swaggerUi from "swagger-ui-express";
 import swaggerDocument from "./openapi.json" with { type: "json" };
 
-import { initializeDatabase } from "./repository.js";
+import {
+    initializeDatabase,
+    getAllTasks,
+    getTaskById
+} from "./repository.js";
 
 const app = express();
 const port = 3000;
@@ -32,17 +36,41 @@ app.get("/health", (req, res) => {
 // from SQLite to PostgreSQL.
 
 // GET all tasks
-app.get("/tasks", (req, res) => {
-    res.status(501).json({
-        error: "GET /tasks will be implemented in Stage 2"
-    });
+app.get("/tasks", async (req, res) => {
+    try {
+        const tasks = await getAllTasks();
+
+        res.json(tasks);
+    } catch (error) {
+        console.error("Error fetching tasks:", error);
+
+        res.status(500).json({
+            error: "Failed to fetch tasks"
+        });
+    }
 });
 
 // GET task by ID
-app.get("/tasks/:id", (req, res) => {
-    res.status(501).json({
-        error: "GET /tasks/:id will be implemented in Stage 2"
-    });
+app.get("/tasks/:id", async (req, res) => {
+    const id = Number(req.params.id);
+
+    try {
+        const task = await getTaskById(id);
+
+        if (!task) {
+            return res.status(404).json({
+                error: `Task ${id} not found`
+            });
+        }
+
+        res.json(task);
+    } catch (error) {
+        console.error("Error fetching task:", error);
+
+        res.status(500).json({
+            error: "Failed to fetch task"
+        });
+    }
 });
 
 // POST task
