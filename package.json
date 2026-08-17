@@ -1,7 +1,6 @@
 {
   "type": "module",
   "dependencies": {
-    "better-sqlite3": "^13.0.3",
     "express": "^5.2.1",
     "nodeman": "^1.1.2",
     "pg": "^8.23.0",
